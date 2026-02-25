@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="JRPG.API/JRPG.API.csproj" />
+  <Project Path="JRPG.Domain/JRPG.Domain.csproj" />
+  <Project Path="JRPG.Infrastructure/JRPG.Infrastructure.csproj" />
+  <Project Path="JRPG.Tests/JRPG.Tests.csproj" />
+</Solution>
