@@ -1,33 +1,47 @@
-<script setup lang="ts">
-</script>
-
 <template>
   <v-app>
+    <v-app-bar color="primary" prominent>
+      <v-app-bar-nav-icon></v-app-bar-nav-icon>
+      <v-toolbar-title>RPG_ESI07</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-btn icon>
+        <v-icon>mdi-account</v-icon>
+      </v-btn>
+    </v-app-bar>
+
     <v-main>
       <v-container>
-        <v-card class="mx-auto mt-5" max-width="400">
-          <v-card-title>RPG ESI07 - Frontend</v-card-title>
-          <v-card-text>Vuetify est configuré avec succès.</v-card-text>
-          <v-card-actions>
-            <v-btn color="primary" variant="elevated">Action</v-btn>
-          </v-card-actions>
-        </v-card>
+        <v-row>
+          <v-col cols="12">
+            <v-card>
+              <v-card-title>
+                <span class="text-h4">Bienvenue sur RPG_ESI07</span>
+              </v-card-title>
+              <v-card-text>
+                <p class="text-subtitle-1">
+                  Architecture sécurisée - RNCP 36286 Cybersécurité
+                </p>
+                <v-chip color="success" class="ma-2">
+                  <v-icon start>mdi-check</v-icon>
+                  Vue 3 + TypeScript
+                </v-chip>
+                <v-chip color="success" class="ma-2">
+                  <v-icon start>mdi-check</v-icon>
+                  Vuetify 3
+                </v-chip>
+                <v-chip color="success" class="ma-2">
+                  <v-icon start>mdi-check</v-icon>
+                  .NET 10
+                </v-chip>
+              </v-card-text>
+            </v-card>
+          </v-col>
+        </v-row>
       </v-container>
     </v-main>
   </v-app>
 </template>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
-</style>
+<script setup lang="ts">
+// Script setup TypeScript
+</script>
