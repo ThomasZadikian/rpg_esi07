@@ -1,0 +1,23 @@
+name: Backend CI
+
+on:
+  push:
+    paths:
+      - 'backend/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+        
+    - name: Restore
+      run: dotnet restore backend/RPG_ESI07.sln
+      
+    - name: Build
+      run: dotnet build backend/RPG_ESI07.sln --no-restore --configuration Release
