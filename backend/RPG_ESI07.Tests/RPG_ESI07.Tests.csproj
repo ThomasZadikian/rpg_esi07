@@ -11,6 +11,8 @@
     <PackageReference Include="coverlet.collector" Version="6.0.4" />
     <PackageReference Include="FluentAssertions" Version="8.8.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="10.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.3" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
     <PackageReference Include="Moq" Version="4.20.72" />
     <PackageReference Include="xunit" Version="2.9.3" />
@@ -22,9 +24,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\JRPG.API\JRPG.API.csproj" />
-    <ProjectReference Include="..\JRPG.Domain\JRPG.Domain.csproj" />
-    <ProjectReference Include="..\JRPG.Infrastructure\JRPG.Infrastructure.csproj" />
+    <ProjectReference Include="..\RPG_ESI07.API\RPG_ESI07.API.csproj" />
+    <ProjectReference Include="..\RPG_ESI07.Domain\RPG_ESI07.Domain.csproj" />
+    <ProjectReference Include="..\RPG_ESI07.Infrastructure\RPG_ESI07.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

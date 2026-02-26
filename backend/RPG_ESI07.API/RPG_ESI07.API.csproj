@@ -18,11 +18,12 @@
     <PackageReference Include="Serilog.AspNetCore" Version="10.0.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="6.1.1" />
     <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.4" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\JRPG.Domain\JRPG.Domain.csproj" />
-    <ProjectReference Include="..\JRPG.Infrastructure\JRPG.Infrastructure.csproj" />
+    <ProjectReference Include="..\RPG_ESI07.Domain\RPG_ESI07.Domain.csproj" />
+    <ProjectReference Include="..\RPG_ESI07.Infrastructure\RPG_ESI07.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
