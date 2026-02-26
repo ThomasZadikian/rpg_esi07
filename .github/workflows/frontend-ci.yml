@@ -2,6 +2,8 @@ name: Frontend CI
 
 on:
   push:
+    branches:
+      - develop
     paths:
       - 'frontend/**'
 
