@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using RPG_ESI07.Domain.Interfaces;
 using RPG_ESI07.Infrastructure.Data;
+using RPG_ESI07.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +30,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         options.EnableDetailedErrors();
     }
 });
+
+// Repositories
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 // CORS configuration
 builder.Services.AddCors(options =>
