@@ -39,7 +39,8 @@ public class AppDbContextTests : IDisposable
             Username = "testuser",
             Email = System.Text.Encoding.UTF8.GetBytes("test@example.com"),
             PasswordHash = "hash123",
-            MfaEnabled = false
+            MfaEnabled = false,
+            FailedLoginAttempts = 1
         };
 
         // Act
