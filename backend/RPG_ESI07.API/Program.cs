@@ -1,7 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using RPG_ESI07.Application;
 using RPG_ESI07.Domain.Interfaces;
+using RPG_ESI07.Infrastructure;
 using RPG_ESI07.Infrastructure.Data;
-using RPG_ESI07.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Application Services (MediatR, FluentValidation, AutoMapper)
+builder.Services.AddApplicationServices();
+
+// Infrastructure Services (Repositories, DbContext)
+builder.Services.AddInfrastructurServices();
 
 // Database configuration
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -22,7 +29,6 @@ builder.Services.AddDbContext<AppDbContext>(options =>
             errorCodesToAdd: null);
         npgsqlOptions.CommandTimeout(30);
     });
-
     // Logging EF Core queries (Development only)
     if (builder.Environment.IsDevelopment())
     {
@@ -30,10 +36,6 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         options.EnableDetailedErrors();
     }
 });
-
-// Repositories
-builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 // CORS configuration
 builder.Services.AddCors(options =>
@@ -68,11 +70,7 @@ if (app.Environment.IsDevelopment())
 {
     using var scope = app.Services.CreateScope();
     var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-
-    // Ensure database created
     await context.Database.EnsureCreatedAsync();
-
-    // Seed data
     await DatabaseSeeder.SeedAsync(context);
 }
 

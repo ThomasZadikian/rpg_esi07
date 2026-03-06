@@ -1,67 +1,47 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using RPG_ESI07.Application.Commands;
+using RPG_ESI07.Application.Queries;
 using RPG_ESI07.Infrastructure.Data;
 
 namespace RPG_ESI07.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class EnemiesController : ControllerBase
+public class EnemiesController: ControllerBase
 {
-    private readonly AppDbContext _context;
-    private readonly ILogger<EnemiesController> _logger;
+    private readonly IMediator _mediator;
+    private readonly ILogger<EnemiesController> _logger; 
 
-    public EnemiesController(AppDbContext context, ILogger<EnemiesController> logger)
+    public EnemiesController(IMediator mediator, ILogger<EnemiesController> logger)
     {
-        _context = context;
+        _mediator = mediator;
         _logger = logger;
     }
 
     /// <summary>
-    /// Get all enemies
-    /// </summary>
-    [HttpGet]
-    public async Task<IActionResult> GetAll()
-    {
-        var enemies = await _context.Enemies
-            .OrderBy(e => e.Type)
-            .ThenBy(e => e.MaxHP)
-            .ToListAsync();
-
-        return Ok(enemies);
-    }
-
-    /// <summary>
-    /// Get enemy by ID
+    /// Get all ennemies
     /// </summary>
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(int id)
+    public async Task<IActionResult> GetById(int Id)
     {
-        var enemy = await _context.Enemies.FindAsync(id);
+        var query = new GetEnemyByIdQuery(Id);
+        var response = await _mediator.Send(query); 
 
-        if (enemy == null)
-        {
-            return NotFound(new { error = $"Enemy with ID {id} not found" });
-        }
+        if(response.Enemy == null)
+            return NotFound(new { error = $"Enemy with ID {Id} not found" });
 
-        return Ok(enemy);
+        return Ok(response.Enemy); 
     }
 
     /// <summary>
-    /// Get enemies by type (basic, miniboss, boss)
+    /// Create a new enemy
     /// </summary>
-    [HttpGet("type/{type}")]
-    public async Task<IActionResult> GetByType(string type)
+    [HttpPost]
+    public async Task<IActionResult> Create([FromBody] CreateEnemyCommand command)
     {
-        if (!new[] { "basic", "miniboss", "boss" }.Contains(type.ToLower()))
-        {
-            return BadRequest(new { error = "Invalid enemy type. Must be: basic, miniboss, or boss" });
-        }
-
-        var enemies = await _context.Enemies
-            .Where(e => e.Type.ToLower() == type.ToLower())
-            .ToListAsync();
-
-        return Ok(enemies);
+        var response = await _mediator.Send(command);
+        return CreatedAtAction(nameof(GetById), new { id = response.Id }, response); 
     }
 }

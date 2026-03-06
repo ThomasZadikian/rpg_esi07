@@ -7,7 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="16.1.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.dependencyInjection" Version="12.0.1" />
+    <PackageReference Include="FluentValidation" Version="12.1.1" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.1" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
+    <PackageReference Include="MediatR" Version="14.1.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.3">
@@ -25,6 +31,8 @@
   <ItemGroup>
     <ProjectReference Include="..\RPG_ESI07.Domain\RPG_ESI07.Domain.csproj" />
     <ProjectReference Include="..\RPG_ESI07.Infrastructure\RPG_ESI07.Infrastructure.csproj" />
+	  <ProjectReference Include="..\RPG_ESI07.Application\RPG_ESI07.Application.csproj" />
+
   </ItemGroup>
 
 </Project>
