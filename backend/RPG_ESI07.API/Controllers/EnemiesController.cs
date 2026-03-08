@@ -21,6 +21,17 @@ public class EnemiesController : ControllerBase
     }
 
     /// <summary>
+    /// Get all enemies
+    /// </summary>
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+        var query = new GetAllEnemiesQuery();
+        var response = await _mediator.Send(query);
+        return Ok(response.Enemies);
+    }
+
+    /// <summary>
     /// Get all ennemies
     /// </summary>
     [HttpGet("{id}")]
@@ -64,6 +75,17 @@ public class EnemiesController : ControllerBase
     {
         var command = new DeleteEnemyCommand(id);
         var response = await _mediator.Send(command); 
+        return Ok(response);
+    }
+
+    /// <summary>
+    /// Get all enemies by type
+    /// </summary>
+    [HttpGet("by-type")]
+    public async Task<IActionResult> GetAllByType([FromQuery] string type)
+    {
+        var query = new GetEnemiesByTypeQuery(type);
+        var response = await _mediator.Send(query); 
         return Ok(response);
     }
 }
