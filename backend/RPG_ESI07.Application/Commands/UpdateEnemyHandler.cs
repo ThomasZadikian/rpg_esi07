@@ -26,7 +26,7 @@ public class UpdateEnemyHandler: IRequestHandler<UpdateEnemyCommand, UpdateEnemy
         _mapper.Map(request, enemy);
         await _repository.UpdateAsync(enemy);
 
-        return new UpdateEnemyResponse("Enemy update successfly"); 
+        return new UpdateEnemyResponse("Enemy updated successfully"); 
 
     }
 }

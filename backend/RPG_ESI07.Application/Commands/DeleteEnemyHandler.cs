@@ -15,13 +15,13 @@ public class DeleteEnemyHandler : IRequestHandler<DeleteEnemyCommand, DeleteEnem
 
     public async Task<DeleteEnemyResponse> Handle(DeleteEnemyCommand request, CancellationToken cancellationToken)
     {
-        var enemy = _repository.GetByIdAsync(request.Id);
+        var enemy = await _repository.GetByIdAsync(request.Id);
 
         if (enemy == null)
             throw new InvalidOperationException($"Enemy with id : {request.Id} does not exist.");
 
         await _repository.DeleteAsync(enemy.Id);
 
-        return new DeleteEnemyResponse("Enemy delete succesfully");
+        return new DeleteEnemyResponse("Enemy deleted successfully");
     }
 }
