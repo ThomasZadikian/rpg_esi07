@@ -10,14 +10,15 @@ public class UpdateEnemyHandler: IRequestHandler<UpdateEnemyCommand, UpdateEnemy
     private readonly IEnemyRepository _repository;
     private readonly IMapper _mapper; 
 
-    public UpdateEnemyHandler(IEnemyRepository repository)
+    public UpdateEnemyHandler(IEnemyRepository repository, IMapper mapper)
     {
         _repository = repository;
+        _mapper = mapper; 
     }
 
     public async Task<UpdateEnemyResponse> Handle(UpdateEnemyCommand request, CancellationToken cancellationToken)
     {
-        var enemy = _repository.GetByIdAsync(request.Id); 
+        var enemy = await _repository.GetByIdAsync(request.Id); 
         
         if (enemy == null)
             throw new InvalidOperationException($"Enemy with id : {request.Id} cannot be found");
@@ -25,7 +26,7 @@ public class UpdateEnemyHandler: IRequestHandler<UpdateEnemyCommand, UpdateEnemy
         _mapper.Map(request, enemy);
         await _repository.UpdateAsync(enemy);
 
-        return new UpdateEnemyResponse("Enemy update successfly"); 
+        return new UpdateEnemyResponse("Enemy updated successfully"); 
 
     }
 }
