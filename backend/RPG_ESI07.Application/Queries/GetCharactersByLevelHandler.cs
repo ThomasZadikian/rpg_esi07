@@ -3,11 +3,11 @@ using RPG_ESI07.Domain.Interfaces;
 
 namespace RPG_ESI07.Application.Queries; 
 
-public class GetAllCharactersByLevelHandler : IRequestHandler<GetCharactersByLevelQuery, GetCharactersByLevelResponse>
+public class GetCharactersByLevelHandler : IRequestHandler<GetCharactersByLevelQuery, GetCharactersByLevelResponse>
 {
     private readonly IPlayerProfileRepository _repository; 
 
-    public GetAllCharactersByLevelHandler(IPlayerProfileRepository repository)
+    public GetCharactersByLevelHandler(IPlayerProfileRepository repository)
     {
         _repository = repository; 
     }

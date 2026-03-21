@@ -7,7 +7,7 @@ public interface IPlayerProfileRepository
     Task<List<PlayerProfile>> GetAllAsync();
     Task<PlayerProfile> GetByIdAsync(int Id);
     Task<List<PlayerProfile>> GetByLevelAsync(int Level);
-    Task<List<PlayerProfile>> GetByClassAsync(string Class); 
+    Task<List<PlayerProfile>> GetBySpeedAsync(); 
 
     Task AddAsync(PlayerProfile profile);
     Task UpdateAsync(PlayerProfile profile);
