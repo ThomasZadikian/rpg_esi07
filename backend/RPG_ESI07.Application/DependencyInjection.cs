@@ -1,8 +1,10 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using RPG_ESI07.Domain.Entities;
 using RPG_ESI07.Domain.Interfaces;
 using RPG_ESI07.Infrastructure;
 using RPG_ESI07.Infrastructure.Repositories;
+using RPG_ESI07.Infrastructure.Repository;
 
 namespace RPG_ESI07.Application; 
 
@@ -23,6 +25,7 @@ public static class DependencyInjection
     {
         services.AddScoped<IEnemyRepository, EnemyRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IPlayerProfileRepository, CharacterRepository>(); 
         return services; 
     }
 }

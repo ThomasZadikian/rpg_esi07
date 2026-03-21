@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace RPG_ESI07.Infrastructure; 
+namespace RPG_ESI07.Infrastructure.Repository; 
 
 public class EnemyRepository : IEnemyRepository
 {
