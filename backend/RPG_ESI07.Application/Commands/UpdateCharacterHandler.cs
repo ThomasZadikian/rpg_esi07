@@ -28,6 +28,6 @@ public class UpdateCharacterHandler:IRequestHandler<UpdateCharactersCommand, Upd
         _mapper.Map(request, player);
         await _repository.UpdateAsync(player);
 
-        return new UpdateCharacterResponse("User update successfully"); 
+        return new UpdateCharacterResponse("Character updated successfully"); 
     }
 }

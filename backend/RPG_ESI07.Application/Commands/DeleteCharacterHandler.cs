@@ -24,6 +24,6 @@ public class DeleteCharacterHandler: IRequestHandler<DeleteCharacterCommand, Del
 
         await _repository.DeleteAsync(request.Id);
 
-        return new DeleteCharacterResponse("Player deleted successfully"); 
+        return new DeleteCharacterResponse("Character deleted successfully"); 
     }
 }

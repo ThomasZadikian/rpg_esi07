@@ -5,11 +5,11 @@ using System.Diagnostics;
 
 namespace RPG_ESI07.Application.Commands; 
 
-public class CreateCharacterCommandHandler : IRequestHandler<CreateCharacterCommand, CreateCharacterResponse>
+public class CreateCharacterHandler : IRequestHandler<CreateCharacterCommand, CreateCharacterResponse>
 {
     private readonly IPlayerProfileRepository _repository;
 
-    public CreateCharacterCommandHandler(IPlayerProfileRepository repository)
+    public CreateCharacterHandler(IPlayerProfileRepository repository)
     {
         _repository = repository; 
     }
