@@ -58,10 +58,10 @@ public class CharacterRepository : IPlayerProfileRepository
 
     public async Task DeleteAsync(int id)
     {
-        var enemy = await _context.Enemies.FindAsync(id);
-        if (enemy != null)
+        var character = await _context.PlayerProfiles.FindAsync(id);
+        if (character != null)
         {
-            _context.Enemies.Remove(enemy);
+            _context.PlayerProfiles.Remove(character);
             await _context.SaveChangesAsync();
         }
     }
