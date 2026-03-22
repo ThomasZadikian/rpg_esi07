@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using RPG_ESI07.Domain.Entities;
 
-namespace RPG_ESI07.Application.Queries;
+namespace RPG_ESI07.Application.Queries.Characters;
 
 public record GetAllCharactersQuery : IRequest<GetAllCharactersResponse>;
 

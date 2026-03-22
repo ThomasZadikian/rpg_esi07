@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace RPG_ESI07.Application.Queries; 
+namespace RPG_ESI07.Application.Queries.Enemies; 
 
 public class GetAllEnemiesHandler: IRequestHandler<GetAllEnemiesQuery, GetAllEnemiesResponse>
 {

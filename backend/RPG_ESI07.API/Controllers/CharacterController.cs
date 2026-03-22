@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using RPG_ESI07.Application.Commands;
-using RPG_ESI07.Application.Queries;
+using RPG_ESI07.Application.Commands.Characters;
+using RPG_ESI07.Application.Queries.Characters;
 
 namespace RPG_ESI07.API.Controllers;
 

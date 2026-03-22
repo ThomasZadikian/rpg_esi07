@@ -5,6 +5,7 @@ using RPG_ESI07.Domain.Entities;
 using RPG_ESI07.Domain.Interfaces;
 using AutoMapper;
 using RPG_ESI07.API.Controllers;
+using RPG_ESI07.Application.Commands.Enemies;
 
 namespace RPG_ESI07.Tests.Handlers.Commands;
 

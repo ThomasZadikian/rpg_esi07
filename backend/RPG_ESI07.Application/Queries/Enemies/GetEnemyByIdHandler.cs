@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using RPG_ESI07.Domain.Interfaces;
 
-namespace RPG_ESI07.Application.Queries;
+namespace RPG_ESI07.Application.Queries.Enemies;
 
 public class GetEnemyByIdHandler : IRequestHandler<GetEnemyByIdQuery, GetEnemyByIdResponse>
 {

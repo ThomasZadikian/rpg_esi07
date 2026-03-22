@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http.Timeouts;
 using RPG_ESI07.Domain.Interfaces;
 
-namespace RPG_ESI07.Application.Commands;
+namespace RPG_ESI07.Application.Commands.Enemies;
 
 public class DeleteEnemyHandler : IRequestHandler<DeleteEnemyCommand, DeleteEnemyResponse>
 {

@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace RPG_ESI07.Application.Commands;
+namespace RPG_ESI07.Application.Commands.Enemies;
 
 public record DeleteEnemyCommand(int Id) : IRequest<DeleteEnemyResponse>;
 

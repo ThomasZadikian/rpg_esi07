@@ -3,7 +3,7 @@ using RPG_ESI07.Domain.Entities;
 using RPG_ESI07.Domain.Interfaces;
 using System.Globalization;
 
-namespace RPG_ESI07.Application.Commands; 
+namespace RPG_ESI07.Application.Commands.Enemies; 
 
 public class CreateEnemyHandler: IRequestHandler<CreateEnemyCommand, CreateEnemyResponse>
 {

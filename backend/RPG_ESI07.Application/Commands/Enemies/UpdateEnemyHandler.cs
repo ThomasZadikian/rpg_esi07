@@ -3,7 +3,7 @@ using MediatR;
 using RPG_ESI07.Application.Mappers;
 using RPG_ESI07.Domain.Interfaces;
 
-namespace RPG_ESI07.Application.Commands; 
+namespace RPG_ESI07.Application.Commands.Enemies; 
 
 public class UpdateEnemyHandler: IRequestHandler<UpdateEnemyCommand, UpdateEnemyResponse>
 {

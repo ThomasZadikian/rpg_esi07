@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using RPG_ESI07.Application.Commands;
-using RPG_ESI07.Application.Queries;
+using RPG_ESI07.Application.Commands.Characters;
+using RPG_ESI07.Application.Queries.Characters;
 using RPG_ESI07.Domain.Entities;
 
 namespace RPG_ESI07.Application.Mappers;

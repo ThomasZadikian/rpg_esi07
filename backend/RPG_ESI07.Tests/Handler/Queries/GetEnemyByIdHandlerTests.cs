@@ -1,5 +1,5 @@
 ﻿using Moq;
-using RPG_ESI07.Application.Queries;
+using RPG_ESI07.Application.Queries.Enemies;
 using RPG_ESI07.Domain.Entities;
 using RPG_ESI07.Domain.Interfaces;
 using RPG_ESI07.Infrastructure;

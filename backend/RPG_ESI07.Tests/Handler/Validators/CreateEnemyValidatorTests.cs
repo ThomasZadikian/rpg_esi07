@@ -1,7 +1,7 @@
 ﻿using Xunit;
 using FluentValidation.TestHelper;
-using RPG_ESI07.Application.Commands;
 using RPG_ESI07.Application.Validators;
+using RPG_ESI07.Application.Commands.Enemies;
 
 namespace RPG_ESI07.Tests.Validators;
 
