@@ -1,8 +1,9 @@
 ﻿using MediatR;
 
-namespace RPG_ESI07.Application.Commands;
+namespace RPG_ESI07.Application.Commands.Enemies;
 
-public record CreateEnemyCommand(
+public record UpdateEnemyCommand(
+    int Id, 
     string Name,
     string Type,
     int MaxHP,
@@ -13,7 +14,6 @@ public record CreateEnemyCommand(
     float MagicalResistance,
     int ExperienceReward,
     int GoldReward,
-    string? Description
-) : IRequest<CreateEnemyResponse>; 
+    string? Description) : IRequest<UpdateEnemyResponse>;
 
-public record CreateEnemyResponse(int Id, string Message); 
+public record UpdateEnemyResponse(string Message); 

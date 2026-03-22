@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace RPG_ESI07.Application.Commands; 
+namespace RPG_ESI07.Application.Commands.Characters; 
 
 public class UpdateCharacterHandler:IRequestHandler<UpdateCharactersCommand, UpdateCharacterResponse>
 {

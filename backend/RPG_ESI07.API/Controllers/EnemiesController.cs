@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using RPG_ESI07.Application.Commands;
-using RPG_ESI07.Application.Queries;
+using RPG_ESI07.Application.Commands.Enemies;
+using RPG_ESI07.Application.Queries.Enemies;
 using RPG_ESI07.Infrastructure.Data;
 
 namespace RPG_ESI07.API.Controllers;

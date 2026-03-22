@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using RPG_ESI07.Application.Commands;
+using RPG_ESI07.Application.Commands.Characters;
 
 namespace RPG_ESI07.Application.Validators;
 

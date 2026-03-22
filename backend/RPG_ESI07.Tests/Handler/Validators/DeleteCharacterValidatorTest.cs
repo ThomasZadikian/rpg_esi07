@@ -1,5 +1,5 @@
 ﻿using Xunit;
-using RPG_ESI07.Application.Commands;
+using RPG_ESI07.Application.Commands.Characters;
 using RPG_ESI07.Application.Validators;
 
 namespace RPG_ESI07.Tests.Validators;

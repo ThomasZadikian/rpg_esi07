@@ -1,6 +1,6 @@
 ﻿using Moq;
 using Xunit;
-using RPG_ESI07.Application.Commands;
+using RPG_ESI07.Application.Commands.Characters;
 using RPG_ESI07.Domain.Entities;
 using RPG_ESI07.Domain.Interfaces;
 
