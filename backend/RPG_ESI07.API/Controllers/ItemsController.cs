@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using RPG_ESI07.Infrastructure.Data;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using RPG_ESI07.Application.Commands.Items;
+using RPG_ESI07.Application.Queries.Items;
 
 namespace RPG_ESI07.API.Controllers;
 
@@ -8,37 +9,36 @@ namespace RPG_ESI07.API.Controllers;
 [Route("api/[controller]")]
 public class ItemsController : ControllerBase
 {
-    private readonly AppDbContext _context;
+    private readonly IMediator _mediator;
 
-    public ItemsController(AppDbContext context)
-    {
-        _context = context;
-    }
+    public ItemsController(IMediator mediator) => _mediator = mediator;
 
-    /// <summary>
-    /// Get all items
-    /// </summary>
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var items = await _context.Items
-            .OrderBy(i => i.Type)
-            .ThenBy(i => i.Price)
-            .ToListAsync();
-
-        return Ok(items);
+        var result = await _mediator.Send(new GetAllItemsQuery());
+        return Ok(result);
     }
 
-    /// <summary>
-    /// Get items by type (weapon, armor, accessory, consumable)
-    /// </summary>
-    [HttpGet("type/{type}")]
-    public async Task<IActionResult> GetByType(string type)
+    [HttpPost]
+    public async Task<IActionResult> Create([FromBody] CreateItemCommand command)
     {
-        var items = await _context.Items
-            .Where(i => i.Type.ToLower() == type.ToLower())
-            .ToListAsync();
+        var result = await _mediator.Send(command);
+        return CreatedAtAction(nameof(GetAll), new { id = result.Id }, result);
+    }
 
-        return Ok(items);
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(int id, [FromBody] UpdateItemCommand command)
+    {
+        if (id != command.Id) return BadRequest("Id mismatch");
+        var result = await _mediator.Send(command);
+        return Ok(result);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var result = await _mediator.Send(new DeleteItemCommand(id));
+        return Ok(result);
     }
 }

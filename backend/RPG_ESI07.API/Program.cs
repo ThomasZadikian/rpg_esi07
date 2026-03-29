@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using RPG_ESI07.Application;
-using RPG_ESI07.Domain.Interfaces;
 using RPG_ESI07.Infrastructure;
 using RPG_ESI07.Infrastructure.Data;
 
@@ -14,8 +13,8 @@ builder.Services.AddSwaggerGen();
 // Application Services (MediatR, FluentValidation, AutoMapper)
 builder.Services.AddApplicationServices();
 
-// Infrastructure Services (Repositories, DbContext)
-builder.Services.AddInfrastructurServices();
+// Infrastructure Services (Repositories)
+builder.Services.AddInfrastructureServices();
 
 // Database configuration
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -29,7 +28,6 @@ builder.Services.AddDbContext<AppDbContext>(options =>
             errorCodesToAdd: null);
         npgsqlOptions.CommandTimeout(30);
     });
-    // Logging EF Core queries (Development only)
     if (builder.Environment.IsDevelopment())
     {
         options.EnableSensitiveDataLogging();
@@ -53,7 +51,6 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -65,7 +62,6 @@ app.UseCors("AllowFrontend");
 app.UseAuthorization();
 app.MapControllers();
 
-// Seed database (development only)
 if (app.Environment.IsDevelopment())
 {
     using var scope = app.Services.CreateScope();

@@ -1,0 +1,20 @@
+using MediatR;
+using RPG_ESI07.Domain.Interfaces;
+
+namespace RPG_ESI07.Application.Queries.AuditLogs;
+
+public class GetAllAuditLogsHandler : IRequestHandler<GetAllAuditLogsQuery, GetAllAuditLogsResponse>
+{
+    private readonly IAuditLogRepository _repository;
+
+    public GetAllAuditLogsHandler(IAuditLogRepository repository)
+    {
+        _repository = repository;
+    }
+
+    public async Task<GetAllAuditLogsResponse> Handle(GetAllAuditLogsQuery request, CancellationToken cancellationToken)
+    {
+        var items = await _repository.GetAllAsync();
+        return new GetAllAuditLogsResponse(items);
+    }
+}
