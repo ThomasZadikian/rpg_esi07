@@ -1,0 +1,106 @@
+using FluentAssertions;
+using Moq;
+using RPG_ESI07.Application.Commands.CombatStatss;
+using RPG_ESI07.Domain.Entities; 
+using RPG_ESI07.Domain.Interfaces;
+
+namespace RPG_ESI07.Tests.Application.Commands.CombatStats;
+
+public class CreateCombatStatsHandlerTests
+{
+    private readonly Mock<ICombatStatsRepository> _mockRepo;
+    private readonly CreateCombatStatsHandler _handler;
+
+    public CreateCombatStatsHandlerTests()
+    {
+        _mockRepo = new Mock<ICombatStatsRepository>();
+        _handler = new CreateCombatStatsHandler(_mockRepo.Object);
+    }
+
+    [Fact]
+    public async Task Handle_ValidCommand_ReturnsSuccess()
+    {
+        // Arrange
+        _mockRepo.Setup(r => r.AddAsync(It.IsAny<RPG_ESI07.Domain.Entities.CombatStats>())).Returns(Task.CompletedTask);
+
+        // Act
+        var result = await _handler.Handle(new CreateCombatStatsCommand(1), CancellationToken.None);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Message.Should().Be("CombatStats created successfully");
+    }
+}
+
+public class UpdateCombatStatsHandlerTests
+{
+    private readonly Mock<ICombatStatsRepository> _mockRepo;
+    private readonly UpdateCombatStatsHandler _handler;
+
+    public UpdateCombatStatsHandlerTests()
+    {
+        _mockRepo = new Mock<ICombatStatsRepository>();
+        _handler = new UpdateCombatStatsHandler(_mockRepo.Object);
+    }
+
+    [Fact]
+    public async Task Handle_ExistingEntity_UpdatesAllFields()
+    {
+        // Arrange
+        var entity = new RPG_ESI07.Domain.Entities.CombatStats { Id = 1, PlayerId = 1 };
+        _mockRepo.Setup(r => r.GetByIdAsync(1)).ReturnsAsync(entity);
+        _mockRepo.Setup(r => r.UpdateAsync(It.IsAny<RPG_ESI07.Domain.Entities.CombatStats>())).Returns(Task.CompletedTask);
+
+        var command = new UpdateCombatStatsCommand(1, 1, 10, 8, 2, 5000, 2000, 120);
+
+        // Act
+        var result = await _handler.Handle(command, CancellationToken.None);
+
+        // Assert
+        result.Success.Should().BeTrue();
+        entity.TotalCombats.Should().Be(10);
+        entity.CombatsWon.Should().Be(8);
+        entity.CombatsLost.Should().Be(2);
+        entity.TotalDamageDealt.Should().Be(5000);
+        entity.TotalDamageTaken.Should().Be(2000);
+    }
+
+    [Fact]
+    public async Task Handle_NonExistingEntity_ReturnsFailure()
+    {
+        // Arrange
+        _mockRepo.Setup(r => r.GetByIdAsync(99)).ReturnsAsync((RPG_ESI07.Domain.Entities.CombatStats?)null);
+
+        // Act
+        var result = await _handler.Handle(new UpdateCombatStatsCommand(99, 1, 0, 0, 0, 0, 0, 0), CancellationToken.None);
+
+        // Assert
+        result.Success.Should().BeFalse();
+    }
+}
+
+public class DeleteCombatStatsHandlerTests
+{
+    private readonly Mock<ICombatStatsRepository> _mockRepo;
+    private readonly DeleteCombatStatsHandler _handler;
+
+    public DeleteCombatStatsHandlerTests()
+    {
+        _mockRepo = new Mock<ICombatStatsRepository>();
+        _handler = new DeleteCombatStatsHandler(_mockRepo.Object);
+    }
+
+    [Fact]
+    public async Task Handle_ValidId_CallsDelete()
+    {
+        // Arrange
+        _mockRepo.Setup(r => r.DeleteAsync(It.IsAny<int>())).Returns(Task.CompletedTask);
+
+        // Act
+        var result = await _handler.Handle(new DeleteCombatStatsCommand(1), CancellationToken.None);
+
+        // Assert
+        result.Success.Should().BeTrue();
+        _mockRepo.Verify(r => r.DeleteAsync(1), Times.Once);
+    }
+}
