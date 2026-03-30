@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RPG_ESI07.Application.Commands.CombatStatss;
 using RPG_ESI07.Application.Queries.CombatStatss;
@@ -7,6 +8,7 @@ namespace RPG_ESI07.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class CombatStatsController : ControllerBase
 {
     private readonly IMediator _mediator;

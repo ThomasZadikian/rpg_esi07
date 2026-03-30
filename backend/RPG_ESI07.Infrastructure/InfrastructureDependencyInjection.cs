@@ -26,6 +26,9 @@ public static class InfrastructureDependencyInjection
 
         // Services
         services.AddScoped<IPasswordHasher, Argon2PasswordHasher>();
+        services.AddScoped<ITokenService,JwtTokenService>();
+        services.AddScoped<IMfaService,TotpMfaService>();
+
 
         return services;
     }

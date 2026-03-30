@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RPG_ESI07.Application.Commands.PlayerInventorys;
 using RPG_ESI07.Application.Queries.PlayerInventorys;
@@ -7,6 +8,7 @@ namespace RPG_ESI07.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class PlayerInventoriesController : ControllerBase
 {
     private readonly IMediator _mediator;
