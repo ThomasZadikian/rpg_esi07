@@ -1,7 +1,11 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using RPG_ESI07.Application;
+using RPG_ESI07.Application.Configuration;
 using RPG_ESI07.Infrastructure;
 using RPG_ESI07.Infrastructure.Data;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +19,35 @@ builder.Services.AddApplicationServices();
 
 // Infrastructure Services (Repositories)
 builder.Services.AddInfrastructureServices();
+
+// JWT Configuration
+var jwtSettings = builder.Configuration
+.GetSection("JwtSettings");
+builder.Services.Configure<JwtSettings>(jwtSettings);
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme =
+    JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme =
+    JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters =
+    new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidIssuer = jwtSettings["Issuer"],
+        ValidateAudience = true,
+        ValidAudience = jwtSettings["Audience"],
+        ValidateLifetime = true,
+        IssuerSigningKey =
+    new SymmetricSecurityKey(
+    Encoding.UTF8.GetBytes(
+    jwtSettings["Secret"]!)),
+        ClockSkew = TimeSpan.Zero
+    };
+});
 
 // Database configuration
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -59,6 +92,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseCors("AllowFrontend");
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
