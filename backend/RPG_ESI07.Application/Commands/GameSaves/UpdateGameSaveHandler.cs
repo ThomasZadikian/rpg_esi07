@@ -12,7 +12,11 @@ public class UpdateGameSaveHandler : IRequestHandler<UpdateGameSaveCommand, Upda
     public async Task<UpdateGameSaveResponse> Handle(UpdateGameSaveCommand request, CancellationToken cancellationToken)
     {
         var entity = await _repository.GetByIdAsync(request.Id);
-        if (entity == null) return new UpdateGameSaveResponse(false, "GameSave not found");
+        if (entity == null)
+            throw new KeyNotFoundException("GameSave not found");
+
+        if (!request.IsAdmin && entity.PlayerId != request.RequestingUserId)
+            throw new UnauthorizedAccessException("Access forbidden");
 
         entity.PlayerId = request.PlayerId;
         entity.CurrentZone = request.CurrentZone;

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RPG_ESI07.Application.Commands.CombatStatss;
 using RPG_ESI07.Application.Queries.CombatStatss;
+using System.Security.Claims;
 
 namespace RPG_ESI07.API.Controllers;
 
@@ -16,13 +17,24 @@ public class CombatStatsController : ControllerBase
     public CombatStatsController(IMediator mediator) => _mediator = mediator;
 
     [HttpGet]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetAll()
     {
         var result = await _mediator.Send(new GetAllCombatStatssQuery());
         return Ok(result);
     }
 
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(int id)
+    {
+        var currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        var isAdmin = User.IsInRole("Admin");
+        var result = await _mediator.Send(new GetCombatStatsByIdQuery(id, currentUserId, isAdmin));
+        return Ok(result);
+    }
+
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Create([FromBody] CreateCombatStatsCommand command)
     {
         var result = await _mediator.Send(command);
@@ -33,14 +45,21 @@ public class CombatStatsController : ControllerBase
     public async Task<IActionResult> Update(int id, [FromBody] UpdateCombatStatsCommand command)
     {
         if (id != command.Id) return BadRequest("Id mismatch");
-        var result = await _mediator.Send(command);
+
+        var currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        var isAdmin = User.IsInRole("Admin");
+
+        var result = await _mediator.Send(command with { RequestingUserId = currentUserId, IsAdmin = isAdmin });
         return Ok(result);
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
-        var result = await _mediator.Send(new DeleteCombatStatsCommand(id));
+        var currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        var isAdmin = User.IsInRole("Admin");
+
+        var result = await _mediator.Send(new DeleteCombatStatsCommand(id, currentUserId, isAdmin));
         return Ok(result);
     }
 }

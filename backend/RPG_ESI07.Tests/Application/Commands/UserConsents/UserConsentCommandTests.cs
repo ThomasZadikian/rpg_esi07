@@ -44,7 +44,7 @@ public class UpdateUserConsentHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ExistingEntity_UpdatesConsent()
+    public async Task Handle_OwnerUpdates_ReturnsSuccess()
     {
         // Arrange
         var entity = new UserConsent { Id = 1, UserId = 1, AnalyticsConsent = false, MarketingConsent = false };
@@ -52,7 +52,9 @@ public class UpdateUserConsentHandlerTests
         _mockRepo.Setup(r => r.UpdateAsync(It.IsAny<UserConsent>())).Returns(Task.CompletedTask);
 
         // Act
-        var result = await _handler.Handle(new UpdateUserConsentCommand(1, 1, true, true), CancellationToken.None);
+        var result = await _handler.Handle(
+            new UpdateUserConsentCommand(1, 1, true, true, RequestingUserId: 1, IsAdmin: false),
+            CancellationToken.None);
 
         // Assert
         result.Success.Should().BeTrue();
@@ -61,16 +63,51 @@ public class UpdateUserConsentHandlerTests
     }
 
     [Fact]
-    public async Task Handle_NonExistingEntity_ReturnsFailure()
+    public async Task Handle_AdminUpdatesAnyUser_ReturnsSuccess()
+    {
+        // Arrange
+        var entity = new UserConsent { Id = 1, UserId = 2, AnalyticsConsent = false, MarketingConsent = false };
+        _mockRepo.Setup(r => r.GetByIdAsync(1)).ReturnsAsync(entity);
+        _mockRepo.Setup(r => r.UpdateAsync(It.IsAny<UserConsent>())).Returns(Task.CompletedTask);
+
+        // Act
+        var result = await _handler.Handle(
+            new UpdateUserConsentCommand(1, 2, true, true, RequestingUserId: 99, IsAdmin: true),
+            CancellationToken.None);
+
+        // Assert
+        result.Success.Should().BeTrue();
+    }
+
+    [Fact]
+    public async Task Handle_OtherUserUpdates_ThrowsUnauthorized()
+    {
+        // Arrange
+        var entity = new UserConsent { Id = 1, UserId = 2, AnalyticsConsent = false, MarketingConsent = false };
+        _mockRepo.Setup(r => r.GetByIdAsync(1)).ReturnsAsync(entity);
+
+        // Act
+        var act = async () => await _handler.Handle(
+            new UpdateUserConsentCommand(1, 2, true, true, RequestingUserId: 1, IsAdmin: false),
+            CancellationToken.None);
+
+        // Assert
+        await act.Should().ThrowAsync<UnauthorizedAccessException>();
+    }
+
+    [Fact]
+    public async Task Handle_NonExistingEntity_ThrowsKeyNotFound()
     {
         // Arrange
         _mockRepo.Setup(r => r.GetByIdAsync(99)).ReturnsAsync((UserConsent?)null);
 
         // Act
-        var result = await _handler.Handle(new UpdateUserConsentCommand(99, 1, true, true), CancellationToken.None);
+        var act = async () => await _handler.Handle(
+            new UpdateUserConsentCommand(99, 1, true, true, RequestingUserId: 1, IsAdmin: false),
+            CancellationToken.None);
 
         // Assert
-        result.Success.Should().BeFalse();
+        await act.Should().ThrowAsync<KeyNotFoundException>();
     }
 }
 
@@ -86,15 +123,68 @@ public class DeleteUserConsentHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ValidId_CallsDelete()
+    public async Task Handle_OwnerDeletes_ReturnsSuccess()
     {
         // Arrange
-        _mockRepo.Setup(r => r.DeleteAsync(It.IsAny<int>())).Returns(Task.CompletedTask);
+        var entity = new UserConsent { Id = 1, UserId = 1 };
+        _mockRepo.Setup(r => r.GetByIdAsync(1)).ReturnsAsync(entity);
+        _mockRepo.Setup(r => r.DeleteAsync(1)).Returns(Task.CompletedTask);
 
         // Act
-        var result = await _handler.Handle(new DeleteUserConsentCommand(1), CancellationToken.None);
+        var result = await _handler.Handle(
+            new DeleteUserConsentCommand(1, RequestingUserId: 1, IsAdmin: false),
+            CancellationToken.None);
 
         // Assert
         result.Success.Should().BeTrue();
+        _mockRepo.Verify(r => r.DeleteAsync(1), Times.Once);
+    }
+
+    [Fact]
+    public async Task Handle_AdminDeletesAnyUser_ReturnsSuccess()
+    {
+        // Arrange
+        var entity = new UserConsent { Id = 1, UserId = 2 };
+        _mockRepo.Setup(r => r.GetByIdAsync(1)).ReturnsAsync(entity);
+        _mockRepo.Setup(r => r.DeleteAsync(1)).Returns(Task.CompletedTask);
+
+        // Act
+        var result = await _handler.Handle(
+            new DeleteUserConsentCommand(1, RequestingUserId: 99, IsAdmin: true),
+            CancellationToken.None);
+
+        // Assert
+        result.Success.Should().BeTrue();
+    }
+
+    [Fact]
+    public async Task Handle_OtherUserDeletes_ThrowsUnauthorized()
+    {
+        // Arrange
+        var entity = new UserConsent { Id = 1, UserId = 2 };
+        _mockRepo.Setup(r => r.GetByIdAsync(1)).ReturnsAsync(entity);
+
+        // Act
+        var act = async () => await _handler.Handle(
+            new DeleteUserConsentCommand(1, RequestingUserId: 1, IsAdmin: false),
+            CancellationToken.None);
+
+        // Assert
+        await act.Should().ThrowAsync<UnauthorizedAccessException>();
+    }
+
+    [Fact]
+    public async Task Handle_NonExistingEntity_ThrowsKeyNotFound()
+    {
+        // Arrange
+        _mockRepo.Setup(r => r.GetByIdAsync(99)).ReturnsAsync((UserConsent?)null);
+
+        // Act
+        var act = async () => await _handler.Handle(
+            new DeleteUserConsentCommand(99, RequestingUserId: 1, IsAdmin: false),
+            CancellationToken.None);
+
+        // Assert
+        await act.Should().ThrowAsync<KeyNotFoundException>();
     }
 }

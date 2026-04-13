@@ -1,3 +1,4 @@
+using AutoMapper;
 using MediatR;
 using RPG_ESI07.Domain.Entities;
 using RPG_ESI07.Domain.Interfaces;
@@ -17,6 +18,7 @@ public class CreateGameSaveHandler : IRequestHandler<CreateGameSaveCommand, Crea
     {
         var entity = new GameSave();
         await _repository.AddAsync(entity);
+
         return new CreateGameSaveResponse(entity.Id, "GameSave created successfully");
     }
 }

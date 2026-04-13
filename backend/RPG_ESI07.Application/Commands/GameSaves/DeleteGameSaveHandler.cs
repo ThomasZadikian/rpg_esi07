@@ -11,6 +11,13 @@ public class DeleteGameSaveHandler : IRequestHandler<DeleteGameSaveCommand, Dele
 
     public async Task<DeleteGameSaveResponse> Handle(DeleteGameSaveCommand request, CancellationToken cancellationToken)
     {
+        var entity = await _repository.GetByIdAsync(request.Id);
+        if (entity == null)
+            throw new KeyNotFoundException("GameSave not found");
+
+        if (!request.IsAdmin && entity.PlayerId != request.RequestingUserId)
+            throw new UnauthorizedAccessException("Access forbidden");
+
         await _repository.DeleteAsync(request.Id);
         return new DeleteGameSaveResponse(true, "GameSave deleted successfully");
     }

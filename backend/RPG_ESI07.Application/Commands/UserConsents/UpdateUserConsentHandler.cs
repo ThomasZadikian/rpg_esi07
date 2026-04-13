@@ -12,7 +12,11 @@ public class UpdateUserConsentHandler : IRequestHandler<UpdateUserConsentCommand
     public async Task<UpdateUserConsentResponse> Handle(UpdateUserConsentCommand request, CancellationToken cancellationToken)
     {
         var entity = await _repository.GetByIdAsync(request.Id);
-        if (entity == null) return new UpdateUserConsentResponse(false, "UserConsent not found");
+        if (entity == null)
+            throw new KeyNotFoundException("UserConsent not found");
+
+        if (!request.IsAdmin && entity.UserId != request.RequestingUserId)
+            throw new UnauthorizedAccessException("Access forbidden");
 
         entity.UserId = request.UserId;
         entity.AnalyticsConsent = request.AnalyticsConsent;

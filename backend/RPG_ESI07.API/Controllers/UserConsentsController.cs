@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RPG_ESI07.Application.Commands.UserConsents;
 using RPG_ESI07.Application.Queries.UserConsents;
+using System.Security.Claims;
 
 namespace RPG_ESI07.API.Controllers;
 
@@ -16,15 +17,29 @@ public class UserConsentsController : ControllerBase
     public UserConsentsController(IMediator mediator) => _mediator = mediator;
 
     [HttpGet]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetAll()
     {
         var result = await _mediator.Send(new GetAllUserConsentsQuery());
         return Ok(result);
     }
 
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(int id)
+    {
+        var currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        var isAdmin = User.IsInRole("Admin");
+        var result = await _mediator.Send(new GetUserConsentByIdQuery(id, currentUserId, isAdmin));
+        return Ok(result);
+    }
+
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateUserConsentCommand command)
     {
+        var currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        if (!User.IsInRole("Admin") && command.UserId != currentUserId)
+            return Forbid();
+
         var result = await _mediator.Send(command);
         return CreatedAtAction(nameof(GetAll), new { id = result.Id }, result);
     }
@@ -33,14 +48,21 @@ public class UserConsentsController : ControllerBase
     public async Task<IActionResult> Update(int id, [FromBody] UpdateUserConsentCommand command)
     {
         if (id != command.Id) return BadRequest("Id mismatch");
-        var result = await _mediator.Send(command);
+
+        var currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        var isAdmin = User.IsInRole("Admin");
+
+        var result = await _mediator.Send(command with { RequestingUserId = currentUserId, IsAdmin = isAdmin });
         return Ok(result);
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
-        var result = await _mediator.Send(new DeleteUserConsentCommand(id));
+        var currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        var isAdmin = User.IsInRole("Admin");
+
+        var result = await _mediator.Send(new DeleteUserConsentCommand(id, currentUserId, isAdmin));
         return Ok(result);
     }
 }

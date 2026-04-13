@@ -18,14 +18,13 @@ public class CreateBestiaryUnlockHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ValidCommand_ReturnsSuccessResponse()
+    public async Task Handle_ValidCommand_ReturnsSuccess()
     {
         // Arrange
-        var command = new CreateBestiaryUnlockCommand(1, 2);
         _mockRepo.Setup(r => r.AddAsync(It.IsAny<BestiaryUnlock>())).Returns(Task.CompletedTask);
 
         // Act
-        var result = await _handler.Handle(command, CancellationToken.None);
+        var result = await _handler.Handle(new CreateBestiaryUnlockCommand(1, 2), CancellationToken.None);
 
         // Assert
         result.Should().NotBeNull();
@@ -46,7 +45,7 @@ public class UpdateBestiaryUnlockHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ExistingEntity_ReturnsSuccess()
+    public async Task Handle_OwnerUpdates_ReturnsSuccess()
     {
         // Arrange
         var entity = new BestiaryUnlock { Id = 1, PlayerId = 1, EnemyId = 1 };
@@ -54,25 +53,61 @@ public class UpdateBestiaryUnlockHandlerTests
         _mockRepo.Setup(r => r.UpdateAsync(It.IsAny<BestiaryUnlock>())).Returns(Task.CompletedTask);
 
         // Act
-        var result = await _handler.Handle(new UpdateBestiaryUnlockCommand(1, 2, 3), CancellationToken.None);
+        var result = await _handler.Handle(
+            new UpdateBestiaryUnlockCommand(1, 1, 3, RequestingUserId: 1, IsAdmin: false),
+            CancellationToken.None);
 
         // Assert
         result.Success.Should().BeTrue();
-        entity.PlayerId.Should().Be(2);
         entity.EnemyId.Should().Be(3);
     }
 
     [Fact]
-    public async Task Handle_NonExistingEntity_ReturnsFailure()
+    public async Task Handle_AdminUpdatesAnyPlayer_ReturnsSuccess()
+    {
+        // Arrange
+        var entity = new BestiaryUnlock { Id = 1, PlayerId = 2, EnemyId = 1 };
+        _mockRepo.Setup(r => r.GetByIdAsync(1)).ReturnsAsync(entity);
+        _mockRepo.Setup(r => r.UpdateAsync(It.IsAny<BestiaryUnlock>())).Returns(Task.CompletedTask);
+
+        // Act
+        var result = await _handler.Handle(
+            new UpdateBestiaryUnlockCommand(1, 2, 3, RequestingUserId: 99, IsAdmin: true),
+            CancellationToken.None);
+
+        // Assert
+        result.Success.Should().BeTrue();
+    }
+
+    [Fact]
+    public async Task Handle_OtherPlayerUpdates_ThrowsUnauthorized()
+    {
+        // Arrange
+        var entity = new BestiaryUnlock { Id = 1, PlayerId = 2, EnemyId = 1 };
+        _mockRepo.Setup(r => r.GetByIdAsync(1)).ReturnsAsync(entity);
+
+        // Act
+        var act = async () => await _handler.Handle(
+            new UpdateBestiaryUnlockCommand(1, 2, 3, RequestingUserId: 1, IsAdmin: false),
+            CancellationToken.None);
+
+        // Assert
+        await act.Should().ThrowAsync<UnauthorizedAccessException>();
+    }
+
+    [Fact]
+    public async Task Handle_NonExistingEntity_ThrowsKeyNotFound()
     {
         // Arrange
         _mockRepo.Setup(r => r.GetByIdAsync(99)).ReturnsAsync((BestiaryUnlock?)null);
 
         // Act
-        var result = await _handler.Handle(new UpdateBestiaryUnlockCommand(99, 1, 1), CancellationToken.None);
+        var act = async () => await _handler.Handle(
+            new UpdateBestiaryUnlockCommand(99, 1, 1, RequestingUserId: 1, IsAdmin: false),
+            CancellationToken.None);
 
         // Assert
-        result.Success.Should().BeFalse();
+        await act.Should().ThrowAsync<KeyNotFoundException>();
     }
 }
 
@@ -88,16 +123,68 @@ public class DeleteBestiaryUnlockHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ValidId_ReturnsSuccess()
+    public async Task Handle_OwnerDeletes_ReturnsSuccess()
     {
         // Arrange
-        _mockRepo.Setup(r => r.DeleteAsync(It.IsAny<int>())).Returns(Task.CompletedTask);
+        var entity = new BestiaryUnlock { Id = 1, PlayerId = 1 };
+        _mockRepo.Setup(r => r.GetByIdAsync(1)).ReturnsAsync(entity);
+        _mockRepo.Setup(r => r.DeleteAsync(1)).Returns(Task.CompletedTask);
 
         // Act
-        var result = await _handler.Handle(new DeleteBestiaryUnlockCommand(1), CancellationToken.None);
+        var result = await _handler.Handle(
+            new DeleteBestiaryUnlockCommand(1, RequestingUserId: 1, IsAdmin: false),
+            CancellationToken.None);
 
         // Assert
         result.Success.Should().BeTrue();
         _mockRepo.Verify(r => r.DeleteAsync(1), Times.Once);
+    }
+
+    [Fact]
+    public async Task Handle_AdminDeletesAnyPlayer_ReturnsSuccess()
+    {
+        // Arrange
+        var entity = new BestiaryUnlock { Id = 1, PlayerId = 2 };
+        _mockRepo.Setup(r => r.GetByIdAsync(1)).ReturnsAsync(entity);
+        _mockRepo.Setup(r => r.DeleteAsync(1)).Returns(Task.CompletedTask);
+
+        // Act
+        var result = await _handler.Handle(
+            new DeleteBestiaryUnlockCommand(1, RequestingUserId: 99, IsAdmin: true),
+            CancellationToken.None);
+
+        // Assert
+        result.Success.Should().BeTrue();
+    }
+
+    [Fact]
+    public async Task Handle_OtherPlayerDeletes_ThrowsUnauthorized()
+    {
+        // Arrange
+        var entity = new BestiaryUnlock { Id = 1, PlayerId = 2 };
+        _mockRepo.Setup(r => r.GetByIdAsync(1)).ReturnsAsync(entity);
+
+        // Act
+        var act = async () => await _handler.Handle(
+            new DeleteBestiaryUnlockCommand(1, RequestingUserId: 1, IsAdmin: false),
+            CancellationToken.None);
+
+        // Assert
+        await act.Should().ThrowAsync<UnauthorizedAccessException>();
+    }
+
+    [Fact]
+    public async Task Handle_NonExistingEntity_ThrowsKeyNotFound()
+    {
+        // Arrange
+        _mockRepo.Setup(r => r.GetByIdAsync(99)).ReturnsAsync((BestiaryUnlock?)null);
+
+        // Act
+        var act = async () => await _handler.Handle(
+            new DeleteBestiaryUnlockCommand(99, RequestingUserId: 1, IsAdmin: false),
+            CancellationToken.None);
+
+        // Assert
+        await act.Should().ThrowAsync<KeyNotFoundException>();
     }
 }
