@@ -16,6 +16,8 @@ public class UsersController : ControllerBase
     public UsersController(IMediator mediator) => _mediator = mediator;
 
     [HttpGet]
+    [Authorize]
+
     public async Task<IActionResult> GetAll()
     {
         var result = await _mediator.Send(new GetAllUsersQuery());
@@ -23,6 +25,8 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
+
     public async Task<IActionResult> Create([FromBody] CreateUserCommand command)
     {
         var result = await _mediator.Send(command);
@@ -30,6 +34,8 @@ public class UsersController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize(Roles = "Admin")]
+
     public async Task<IActionResult> Update(int id, [FromBody] UpdateUserCommand command)
     {
         if (id != command.Id) return BadRequest("Id mismatch");
@@ -38,6 +44,8 @@ public class UsersController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
+
     public async Task<IActionResult> Delete(int id)
     {
         var result = await _mediator.Send(new DeleteUserCommand(id));

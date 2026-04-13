@@ -16,6 +16,7 @@ public class AuditLogsController : ControllerBase
     public AuditLogsController(IMediator mediator) => _mediator = mediator;
 
     [HttpGet]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetAll()
     {
         var result = await _mediator.Send(new GetAllAuditLogsQuery());
@@ -23,6 +24,7 @@ public class AuditLogsController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Create([FromBody] CreateAuditLogCommand command)
     {
         var result = await _mediator.Send(command);
@@ -30,6 +32,7 @@ public class AuditLogsController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles ="Admin")]
     public async Task<IActionResult> Delete(int id)
     {
         var result = await _mediator.Send(new DeleteAuditLogCommand(id));

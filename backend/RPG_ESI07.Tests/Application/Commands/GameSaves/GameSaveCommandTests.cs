@@ -44,7 +44,7 @@ public class UpdateGameSaveHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ExistingEntity_UpdatesZone()
+    public async Task Handle_OwnerUpdates_ReturnsSuccess()
     {
         // Arrange
         var entity = new GameSave { Id = 1, PlayerId = 1, CurrentZone = "Tutorial" };
@@ -52,7 +52,9 @@ public class UpdateGameSaveHandlerTests
         _mockRepo.Setup(r => r.UpdateAsync(It.IsAny<GameSave>())).Returns(Task.CompletedTask);
 
         // Act
-        var result = await _handler.Handle(new UpdateGameSaveCommand(1, 1, "BossFinal", 10), CancellationToken.None);
+        var result = await _handler.Handle(
+            new UpdateGameSaveCommand(1, 1, "BossFinal", 10, RequestingUserId: 1, IsAdmin: false),
+            CancellationToken.None);
 
         // Assert
         result.Success.Should().BeTrue();
@@ -60,16 +62,51 @@ public class UpdateGameSaveHandlerTests
     }
 
     [Fact]
-    public async Task Handle_NonExistingEntity_ReturnsFailure()
+    public async Task Handle_AdminUpdatesAnyPlayer_ReturnsSuccess()
+    {
+        // Arrange
+        var entity = new GameSave { Id = 1, PlayerId = 2, CurrentZone = "Tutorial" };
+        _mockRepo.Setup(r => r.GetByIdAsync(1)).ReturnsAsync(entity);
+        _mockRepo.Setup(r => r.UpdateAsync(It.IsAny<GameSave>())).Returns(Task.CompletedTask);
+
+        // Act
+        var result = await _handler.Handle(
+            new UpdateGameSaveCommand(1, 2, "BossFinal", 10, RequestingUserId: 99, IsAdmin: true),
+            CancellationToken.None);
+
+        // Assert
+        result.Success.Should().BeTrue();
+    }
+
+    [Fact]
+    public async Task Handle_OtherPlayerUpdates_ThrowsUnauthorized()
+    {
+        // Arrange
+        var entity = new GameSave { Id = 1, PlayerId = 2, CurrentZone = "Tutorial" };
+        _mockRepo.Setup(r => r.GetByIdAsync(1)).ReturnsAsync(entity);
+
+        // Act
+        var act = async () => await _handler.Handle(
+            new UpdateGameSaveCommand(1, 2, "BossFinal", 10, RequestingUserId: 1, IsAdmin: false),
+            CancellationToken.None);
+
+        // Assert
+        await act.Should().ThrowAsync<UnauthorizedAccessException>();
+    }
+
+    [Fact]
+    public async Task Handle_NonExistingEntity_ThrowsKeyNotFound()
     {
         // Arrange
         _mockRepo.Setup(r => r.GetByIdAsync(99)).ReturnsAsync((GameSave?)null);
 
         // Act
-        var result = await _handler.Handle(new UpdateGameSaveCommand(99, 1, "X", 1), CancellationToken.None);
+        var act = async () => await _handler.Handle(
+            new UpdateGameSaveCommand(99, 1, "X", 1, RequestingUserId: 1, IsAdmin: false),
+            CancellationToken.None);
 
         // Assert
-        result.Success.Should().BeFalse();
+        await act.Should().ThrowAsync<KeyNotFoundException>();
     }
 }
 
@@ -85,16 +122,68 @@ public class DeleteGameSaveHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ValidId_CallsDelete()
+    public async Task Handle_OwnerDeletes_ReturnsSuccess()
     {
         // Arrange
-        _mockRepo.Setup(r => r.DeleteAsync(It.IsAny<int>())).Returns(Task.CompletedTask);
+        var entity = new GameSave { Id = 1, PlayerId = 1 };
+        _mockRepo.Setup(r => r.GetByIdAsync(1)).ReturnsAsync(entity);
+        _mockRepo.Setup(r => r.DeleteAsync(1)).Returns(Task.CompletedTask);
 
         // Act
-        var result = await _handler.Handle(new DeleteGameSaveCommand(1), CancellationToken.None);
+        var result = await _handler.Handle(
+            new DeleteGameSaveCommand(1, RequestingUserId: 1, IsAdmin: false),
+            CancellationToken.None);
 
         // Assert
         result.Success.Should().BeTrue();
         _mockRepo.Verify(r => r.DeleteAsync(1), Times.Once);
+    }
+
+    [Fact]
+    public async Task Handle_AdminDeletesAnyPlayer_ReturnsSuccess()
+    {
+        // Arrange
+        var entity = new GameSave { Id = 1, PlayerId = 2 };
+        _mockRepo.Setup(r => r.GetByIdAsync(1)).ReturnsAsync(entity);
+        _mockRepo.Setup(r => r.DeleteAsync(1)).Returns(Task.CompletedTask);
+
+        // Act
+        var result = await _handler.Handle(
+            new DeleteGameSaveCommand(1, RequestingUserId: 99, IsAdmin: true),
+            CancellationToken.None);
+
+        // Assert
+        result.Success.Should().BeTrue();
+    }
+
+    [Fact]
+    public async Task Handle_OtherPlayerDeletes_ThrowsUnauthorized()
+    {
+        // Arrange
+        var entity = new GameSave { Id = 1, PlayerId = 2 };
+        _mockRepo.Setup(r => r.GetByIdAsync(1)).ReturnsAsync(entity);
+
+        // Act
+        var act = async () => await _handler.Handle(
+            new DeleteGameSaveCommand(1, RequestingUserId: 1, IsAdmin: false),
+            CancellationToken.None);
+
+        // Assert
+        await act.Should().ThrowAsync<UnauthorizedAccessException>();
+    }
+
+    [Fact]
+    public async Task Handle_NonExistingEntity_ThrowsKeyNotFound()
+    {
+        // Arrange
+        _mockRepo.Setup(r => r.GetByIdAsync(99)).ReturnsAsync((GameSave?)null);
+
+        // Act
+        var act = async () => await _handler.Handle(
+            new DeleteGameSaveCommand(99, RequestingUserId: 1, IsAdmin: false),
+            CancellationToken.None);
+
+        // Assert
+        await act.Should().ThrowAsync<KeyNotFoundException>();
     }
 }

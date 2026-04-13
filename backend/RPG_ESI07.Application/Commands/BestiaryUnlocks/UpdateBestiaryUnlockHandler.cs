@@ -1,5 +1,4 @@
 using MediatR;
-using RPG_ESI07.Domain.Entities;
 using RPG_ESI07.Domain.Interfaces;
 
 namespace RPG_ESI07.Application.Commands.BestiaryUnlocks;
@@ -13,7 +12,11 @@ public class UpdateBestiaryUnlockHandler : IRequestHandler<UpdateBestiaryUnlockC
     public async Task<UpdateBestiaryUnlockResponse> Handle(UpdateBestiaryUnlockCommand request, CancellationToken cancellationToken)
     {
         var entity = await _repository.GetByIdAsync(request.Id);
-        if (entity == null) return new UpdateBestiaryUnlockResponse(false, "BestiaryUnlock not found");
+        if (entity == null)
+            throw new KeyNotFoundException("BestiaryUnlock not found");
+
+        if (!request.IsAdmin && entity.PlayerId != request.RequestingUserId)
+            throw new UnauthorizedAccessException("Access forbidden");
 
         entity.PlayerId = request.PlayerId;
         entity.EnemyId = request.EnemyId;

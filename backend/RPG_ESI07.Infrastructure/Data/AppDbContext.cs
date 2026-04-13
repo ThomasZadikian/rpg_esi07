@@ -45,6 +45,11 @@ public class AppDbContext : DbContext
                 .HasMaxLength(255)
                 .IsRequired();
 
+            entity.Property(e => e.Role)
+                .HasMaxLength(20)
+                .HasDefaultValue("Player")
+                .IsRequired();
+
             entity.Property(e => e.LastLoginIP)
                 .HasMaxLength(45); // IPv6
 
@@ -59,7 +64,7 @@ public class AppDbContext : DbContext
                 .WithOne(e => e.User)
                 .HasForeignKey(e => e.UserId)
                 .OnDelete(DeleteBehavior.SetNull);
-        });
+        }); 
 
         // ===== PLAYERPROFILE CONFIGURATION =====
         modelBuilder.Entity<PlayerProfile>(entity =>

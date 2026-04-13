@@ -23,6 +23,7 @@ public class ItemsController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles ="Admin")]
     public async Task<IActionResult> Create([FromBody] CreateItemCommand command)
     {
         var result = await _mediator.Send(command);
@@ -30,6 +31,7 @@ public class ItemsController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize(Roles ="Admin")]
     public async Task<IActionResult> Update(int id, [FromBody] UpdateItemCommand command)
     {
         if (id != command.Id) return BadRequest("Id mismatch");
@@ -38,6 +40,7 @@ public class ItemsController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles ="Admin")]
     public async Task<IActionResult> Delete(int id)
     {
         var result = await _mediator.Send(new DeleteItemCommand(id));

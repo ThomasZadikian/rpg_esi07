@@ -59,7 +59,7 @@ public class LoginHandler
         }
         // 6. Pas de MFA - JWT direct
         var token = _tokenService
-        .GenerateAccessToken(user, "Player");
+        .GenerateAccessToken(user, user.Role);
         return new AuthResponse(
         true, token, false,
         "Login successful");

@@ -12,7 +12,11 @@ public class UpdatePlayerInventoryHandler : IRequestHandler<UpdatePlayerInventor
     public async Task<UpdatePlayerInventoryResponse> Handle(UpdatePlayerInventoryCommand request, CancellationToken cancellationToken)
     {
         var entity = await _repository.GetByIdAsync(request.Id);
-        if (entity == null) return new UpdatePlayerInventoryResponse(false, "PlayerInventory not found");
+        if (entity == null)
+            throw new KeyNotFoundException("PlayerInventory not found");
+
+        if (!request.IsAdmin && entity.PlayerId != request.RequestingUserId)
+            throw new UnauthorizedAccessException("Access forbidden");
 
         entity.PlayerId = request.PlayerId;
         entity.ItemId = request.ItemId;

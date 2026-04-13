@@ -12,7 +12,11 @@ public class UpdateCombatStatsHandler : IRequestHandler<UpdateCombatStatsCommand
     public async Task<UpdateCombatStatsResponse> Handle(UpdateCombatStatsCommand request, CancellationToken cancellationToken)
     {
         var entity = await _repository.GetByIdAsync(request.Id);
-        if (entity == null) return new UpdateCombatStatsResponse(false, "CombatStats not found");
+        if (entity == null)
+            throw new KeyNotFoundException("CombatStats not found");
+
+        if (!request.IsAdmin && entity.PlayerId != request.RequestingUserId)
+            throw new UnauthorizedAccessException("Access forbidden");
 
         entity.PlayerId = request.PlayerId;
         entity.TotalCombats = request.TotalCombats;
