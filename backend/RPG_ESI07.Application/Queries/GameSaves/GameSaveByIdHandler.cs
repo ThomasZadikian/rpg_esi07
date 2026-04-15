@@ -7,7 +7,7 @@ public class GetSaveByIdHandler : IRequestHandler<GetSaveByIdQuery, GetSaveByIdR
 {
     private readonly IGameSaveRepository _repository;
 
-    public GetSaveByIdHandler(IGameSaveRepository repository, CancellationToken cancellationToken)
+    public GetSaveByIdHandler(IGameSaveRepository repository)
     {
         _repository = repository;
     }
