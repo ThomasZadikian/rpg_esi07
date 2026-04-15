@@ -32,7 +32,7 @@ public class AuditLogsController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    [Authorize(Roles ="Admin")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(int id)
     {
         var result = await _mediator.Send(new DeleteAuditLogCommand(id));

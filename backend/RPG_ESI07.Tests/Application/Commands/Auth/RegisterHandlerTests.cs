@@ -3,9 +3,6 @@ using Moq;
 using RPG_ESI07.Application.Commands.Auth;
 using RPG_ESI07.Domain.Entities;
 using RPG_ESI07.Domain.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace RPG_ESI07.Tests.Application.Commands.Auth;
 
@@ -15,6 +12,7 @@ public class RegisterHandlerTests
     private readonly Mock<IPasswordHasher> _mockHasher;
     private readonly Mock<ITokenService> _mockToken;
     private readonly RegisterHandler _handler;
+
     public RegisterHandlerTests()
     {
         _mockRepo = new Mock<IUserRepository>();
@@ -25,6 +23,7 @@ public class RegisterHandlerTests
         _mockHasher.Object,
         _mockToken.Object);
     }
+
     [Fact]
     public async Task Handle_NewUser_ReturnsToken()
     {
@@ -51,6 +50,7 @@ public class RegisterHandlerTests
         result.success.Should().BeTrue();
         result.token.Should().Be("jwt-token");
     }
+
     [Fact]
     public async Task Handle_DuplicateUser_Fails()
     {
@@ -64,8 +64,7 @@ public class RegisterHandlerTests
         "existing", "x@x.com", "Pass123!"),
         CancellationToken.None);
         // Assert
-        result.success.Should().BeFalse(); 
+        result.success.Should().BeFalse();
         result.token.Should().BeNull();
     }
 }
-

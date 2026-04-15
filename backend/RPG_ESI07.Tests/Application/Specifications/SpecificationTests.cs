@@ -1,12 +1,12 @@
 ﻿using FluentAssertions;
 using RPG_ESI07.Application.Specifications;
-using Xunit;
 
 namespace RPG_ESI07.Tests.Application.Specifications;
 
 public class SpecificationTests
 {
-    private class TestEntity { public int Id { get; set; } }
+    private class TestEntity
+    { public int Id { get; set; } }
 
     private class TestSpecification : Specification<TestEntity>
     {

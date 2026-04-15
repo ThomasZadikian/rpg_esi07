@@ -1,6 +1,5 @@
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
-using RPG_ESI07.Domain.Interfaces;
 
 namespace RPG_ESI07.Application;
 

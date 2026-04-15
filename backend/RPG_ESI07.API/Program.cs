@@ -5,7 +5,6 @@ using RPG_ESI07.Application;
 using RPG_ESI07.Application.Configuration;
 using RPG_ESI07.Infrastructure;
 using RPG_ESI07.Infrastructure.Data;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);

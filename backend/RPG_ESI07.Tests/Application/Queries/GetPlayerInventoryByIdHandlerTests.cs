@@ -3,11 +3,6 @@ using Moq;
 using RPG_ESI07.Application.Queries.PlayerInventorys;
 using RPG_ESI07.Domain.Entities;
 using RPG_ESI07.Domain.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using Xunit;
 
 namespace RPG_ESI07.Tests.Application.Queries;
 

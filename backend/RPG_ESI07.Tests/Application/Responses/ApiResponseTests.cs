@@ -1,6 +1,5 @@
 ﻿using FluentAssertions;
 using RPG_ESI07.Application.Responses;
-using Xunit;
 
 namespace RPG_ESI07.Tests.Application.Responses;
 

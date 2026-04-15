@@ -4,9 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using RPG_ESI07.API.Controllers;
 using RPG_ESI07.Application.Commands.Auth;
-using System.Threading;
-using System.Threading.Tasks;
-using Xunit;
 
 namespace RPG_ESI07.Tests.Controllers;
 

@@ -4,12 +4,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using RPG_ESI07.API.Middleware;
 using RPG_ESI07.Application.Responses;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Text.Json;
-using System.Threading.Tasks;
-using Xunit;
 
 namespace RPG_ESI07.Tests.Middleware;
 
@@ -61,7 +56,7 @@ public class ExceptionHandlingMiddlewareTests
         var (context, responseData) = await ExecuteMiddlewareAsync(null);
 
         context.Response.StatusCode.Should().Be(200);
-        responseData.Should().BeNull(); 
+        responseData.Should().BeNull();
     }
 
     [Fact]

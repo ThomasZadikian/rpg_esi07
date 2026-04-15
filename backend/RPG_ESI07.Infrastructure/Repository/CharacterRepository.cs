@@ -2,9 +2,6 @@
 using RPG_ESI07.Domain.Entities;
 using RPG_ESI07.Domain.Interfaces;
 using RPG_ESI07.Infrastructure.Data;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace RPG_ESI07.Infrastructure.Repository;
 
@@ -34,14 +31,14 @@ public class CharacterRepository : IPlayerProfileRepository
     {
         return await _context.PlayerProfiles.
             OrderBy(e => e.Speed).
-            ToListAsync(); 
+            ToListAsync();
     }
 
     public async Task<List<PlayerProfile>> GetByLevelAsync(int level)
     {
         return await _context.PlayerProfiles.
             OrderBy(e => e.Level)
-            .ToListAsync();  
+            .ToListAsync();
     }
 
     public async Task AddAsync(PlayerProfile character)

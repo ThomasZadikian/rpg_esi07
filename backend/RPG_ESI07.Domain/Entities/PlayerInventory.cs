@@ -10,5 +10,6 @@ public class PlayerInventory
 
     // Navigation properties
     public PlayerProfile Player { get; set; } = null!;
+
     public Item Item { get; set; } = null!;
 }

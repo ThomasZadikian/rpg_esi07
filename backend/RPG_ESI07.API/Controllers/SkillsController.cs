@@ -16,7 +16,7 @@ public class SkillsController : ControllerBase
     public SkillsController(IMediator mediator) => _mediator = mediator;
 
     [HttpGet]
-    [Authorize(Roles ="Admin")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetAll()
     {
         var result = await _mediator.Send(new GetAllSkillsQuery());
@@ -25,7 +25,6 @@ public class SkillsController : ControllerBase
 
     [HttpPost]
     [Authorize(Roles = "Admin")]
-
     public async Task<IActionResult> Create([FromBody] CreateSkillCommand command)
     {
         var result = await _mediator.Send(command);
@@ -34,7 +33,6 @@ public class SkillsController : ControllerBase
 
     [HttpPut("{id}")]
     [Authorize(Roles = "Admin")]
-
     public async Task<IActionResult> Update(int id, [FromBody] UpdateSkillCommand command)
     {
         if (id != command.Id) return BadRequest("Id mismatch");
@@ -44,7 +42,6 @@ public class SkillsController : ControllerBase
 
     [HttpDelete("{id}")]
     [Authorize(Roles = "Admin")]
-
     public async Task<IActionResult> Delete(int id)
     {
         var result = await _mediator.Send(new DeleteSkillCommand(id));

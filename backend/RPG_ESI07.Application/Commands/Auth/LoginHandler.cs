@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using RPG_ESI07.Domain.Interfaces;
+
 namespace RPG_ESI07.Application.Commands.Auth;
 
 public class LoginHandler
@@ -8,6 +9,7 @@ public class LoginHandler
     private readonly IUserRepository _userRepo;
     private readonly IPasswordHasher _hasher;
     private readonly ITokenService _tokenService;
+
     public LoginHandler(
     IUserRepository userRepo,
     IPasswordHasher hasher,
@@ -17,6 +19,7 @@ public class LoginHandler
         _hasher = hasher;
         _tokenService = tokenService;
     }
+
     public async Task<AuthResponse> Handle(
     LoginCommand request,
     CancellationToken ct)

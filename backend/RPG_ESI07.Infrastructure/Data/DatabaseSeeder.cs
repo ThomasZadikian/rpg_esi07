@@ -1,5 +1,5 @@
-﻿using RPG_ESI07.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using RPG_ESI07.Domain.Entities;
 using System.Text;
 using System.Text.Json;
 
@@ -507,7 +507,7 @@ public static class DatabaseSeeder
             new PlayerInventory { PlayerId = profiles[0].Id, ItemId = items[3].Id, Quantity = 1, IsEquipped = true }, // Armure de Cuir
             new PlayerInventory { PlayerId = profiles[0].Id, ItemId = items[9].Id, Quantity = 5, IsEquipped = false }, // Petite Potion HP
             new PlayerInventory { PlayerId = profiles[0].Id, ItemId = items[12].Id, Quantity = 3, IsEquipped = false }, // Petite Potion MP
-            
+
             // AdminUser inventory
             new PlayerInventory { PlayerId = profiles[1].Id, ItemId = items[2].Id, Quantity = 1, IsEquipped = true }, // Épée Magique
             new PlayerInventory { PlayerId = profiles[1].Id, ItemId = items[5].Id, Quantity = 1, IsEquipped = true }, // Armure de Plates
@@ -526,7 +526,7 @@ public static class DatabaseSeeder
             // DevUser skills
             new PlayerSkill { PlayerId = profiles[0].Id, SkillId = skills[0].Id }, // Boule de Feu
             new PlayerSkill { PlayerId = profiles[0].Id, SkillId = skills[4].Id }, // Soin
-            
+
             // AdminUser skills (toutes)
             new PlayerSkill { PlayerId = profiles[1].Id, SkillId = skills[0].Id }, // Boule de Feu
             new PlayerSkill { PlayerId = profiles[1].Id, SkillId = skills[1].Id }, // Éclair
@@ -548,7 +548,7 @@ public static class DatabaseSeeder
             new BestiaryUnlock { PlayerId = profiles[0].Id, EnemyId = enemies[0].Id }, // Goblin
             new BestiaryUnlock { PlayerId = profiles[0].Id, EnemyId = enemies[1].Id }, // Orc
             new BestiaryUnlock { PlayerId = profiles[0].Id, EnemyId = enemies[2].Id }, // Loup
-            
+
             new BestiaryUnlock { PlayerId = profiles[1].Id, EnemyId = enemies[0].Id }, // Goblin
             new BestiaryUnlock { PlayerId = profiles[1].Id, EnemyId = enemies[1].Id }, // Orc
             new BestiaryUnlock { PlayerId = profiles[1].Id, EnemyId = enemies[2].Id }, // Loup

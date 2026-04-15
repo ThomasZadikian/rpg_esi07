@@ -3,11 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using RPG_ESI07.Domain.Entities;
 using RPG_ESI07.Infrastructure.Data;
 using RPG_ESI07.Infrastructure.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Xunit;
 
 namespace RPG_ESI07.Tests.Infrastructure.Repositories;
 

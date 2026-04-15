@@ -4,9 +4,6 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using RPG_ESI07.Domain.Entities;
 using RPG_ESI07.Infrastructure.Data;
-using System;
-using System.Linq;
-using Xunit;
 
 namespace RPG_ESI07.Tests.Infrastructure.Data;
 

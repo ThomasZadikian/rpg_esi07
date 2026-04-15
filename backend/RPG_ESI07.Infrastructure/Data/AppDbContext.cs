@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RPG_ESI07.Domain.Entities;
 
-
 namespace RPG_ESI07.Infrastructure.Data;
 
 public class AppDbContext : DbContext
@@ -12,6 +11,7 @@ public class AppDbContext : DbContext
 
     // DbSets - Toutes les entities
     public DbSet<User> Users => Set<User>();
+
     public DbSet<PlayerProfile> PlayerProfiles => Set<PlayerProfile>();
     public DbSet<GameSave> GameSaves => Set<GameSave>();
     public DbSet<Enemy> Enemies => Set<Enemy>();
@@ -64,7 +64,7 @@ public class AppDbContext : DbContext
                 .WithOne(e => e.User)
                 .HasForeignKey(e => e.UserId)
                 .OnDelete(DeleteBehavior.SetNull);
-        }); 
+        });
 
         // ===== PLAYERPROFILE CONFIGURATION =====
         modelBuilder.Entity<PlayerProfile>(entity =>
@@ -290,8 +290,8 @@ public class AppDbContext : DbContext
             entity.ToTable(t =>
             {
                 t.HasCheckConstraint("CK_AuditLog_EventType",
-                    @"""EventType"" IN ('LOGIN_SUCCESS', 'LOGIN_FAILED', 'LOGOUT', 
-                    'DATA_EXPORT', 'DATA_DELETE', 'DATA_MODIFY', 
+                    @"""EventType"" IN ('LOGIN_SUCCESS', 'LOGIN_FAILED', 'LOGOUT',
+                    'DATA_EXPORT', 'DATA_DELETE', 'DATA_MODIFY',
                     'CHEAT_DETECTED', 'ADMIN_ACTION', 'MFA_ENABLED', 'MFA_FAILED')");
             });
         });

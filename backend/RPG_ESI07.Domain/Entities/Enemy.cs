@@ -14,7 +14,7 @@ public class Enemy
     public int ExperienceReward { get; set; }
     public int GoldReward { get; set; }
     public string? Description { get; set; }
-    
+
     // Navigation properties
     public ICollection<BestiaryUnlock> BestiaryUnlocks { get; set; } = new List<BestiaryUnlock>();
 }

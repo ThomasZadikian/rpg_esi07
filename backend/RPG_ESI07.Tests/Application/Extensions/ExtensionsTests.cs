@@ -1,10 +1,5 @@
 ﻿using FluentAssertions;
 using RPG_ESI07.Application.Extensions;
-using RPG_ESI07.Application.Responses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Xunit;
 
 namespace RPG_ESI07.Tests.Application.Extensions;
 

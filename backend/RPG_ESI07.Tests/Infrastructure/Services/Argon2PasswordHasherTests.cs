@@ -1,7 +1,5 @@
 ﻿using FluentAssertions;
 using RPG_ESI07.Infrastructure.Services;
-using System;
-using Xunit;
 
 namespace RPG_ESI07.Tests.Infrastructure.Services;
 

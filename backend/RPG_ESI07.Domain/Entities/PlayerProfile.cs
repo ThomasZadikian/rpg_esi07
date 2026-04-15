@@ -16,9 +16,10 @@ public class PlayerProfile
     public int Experience { get; set; } = 0;
     public int Gold { get; set; } = 0;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-    
+
     // Navigation properties
     public User User { get; set; } = null!;
+
     public ICollection<GameSave> GameSaves { get; set; } = new List<GameSave>();
     public CombatStats? CombatStats { get; set; }
     public ICollection<BestiaryUnlock> BestiaryUnlocks { get; set; } = new List<BestiaryUnlock>();

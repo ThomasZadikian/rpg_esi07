@@ -2,7 +2,6 @@
 using OtpNet;
 using RPG_ESI07.Infrastructure.Services;
 using System.Text;
-using Xunit;
 
 namespace RPG_ESI07.Tests.Infrastructure.Services;
 

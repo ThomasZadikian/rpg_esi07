@@ -1,16 +1,18 @@
 ﻿using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using RPG_ESI07.Application.Configuration;
 using RPG_ESI07.Domain.Entities;
 using RPG_ESI07.Domain.Interfaces;
-using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
-using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 using System.Text;
 
-namespace RPG_ESI07.Infrastructure.Services; 
-public class JwtTokenService: ITokenService
+namespace RPG_ESI07.Infrastructure.Services;
+
+public class JwtTokenService : ITokenService
 {
-    private readonly JwtSettings _settings; 
+    private readonly JwtSettings _settings;
+
     public JwtTokenService(IOptions<JwtSettings> settings)
     {
         _settings = settings.Value;
@@ -20,18 +22,18 @@ public class JwtTokenService: ITokenService
     {
         var claims = new[]
         {
-            new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()), 
-            new Claim("username", user.Username), 
-            new Claim(ClaimTypes.Role, role), 
+            new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+            new Claim("username", user.Username),
+            new Claim(ClaimTypes.Role, role),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_settings.Secret)); 
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_settings.Secret));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
         var token = new JwtSecurityToken(
-            issuer: _settings.Issuer, 
+            issuer: _settings.Issuer,
             audience: _settings.Audience,
             claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(_settings.AccessTokenExpirationMinutes), 
+            expires: DateTime.UtcNow.AddMinutes(_settings.AccessTokenExpirationMinutes),
             signingCredentials: creds);
 
         return new JwtSecurityTokenHandler().WriteToken(token);
@@ -46,8 +48,8 @@ public class JwtTokenService: ITokenService
         };
         var key = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(_settings.Secret));
-            var creds = new SigningCredentials(
-            key, SecurityAlgorithms.HmacSha256);
+        var creds = new SigningCredentials(
+        key, SecurityAlgorithms.HmacSha256);
         var token = new JwtSecurityToken(
             issuer: _settings.Issuer,
             audience: _settings.Audience,

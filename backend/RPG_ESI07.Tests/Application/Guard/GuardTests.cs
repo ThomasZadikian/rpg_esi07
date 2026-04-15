@@ -1,8 +1,5 @@
 ﻿using FluentAssertions;
 using RPG_ESI07.Application.Guards;
-using System;
-using System.Collections.Generic;
-using Xunit;
 
 namespace RPG_ESI07.Tests.Application.Guards;
 

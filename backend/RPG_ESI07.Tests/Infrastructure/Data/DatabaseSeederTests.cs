@@ -2,10 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using RPG_ESI07.Domain.Entities;
 using RPG_ESI07.Infrastructure.Data;
-using System;
 using System.Text;
-using System.Threading.Tasks;
-using Xunit;
 
 namespace RPG_ESI07.Tests.Infrastructure.Data;
 

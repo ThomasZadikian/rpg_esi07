@@ -1,5 +1,4 @@
 using RPG_ESI07.Application.Responses;
-using System.Net;
 
 namespace RPG_ESI07.API.Middleware;
 

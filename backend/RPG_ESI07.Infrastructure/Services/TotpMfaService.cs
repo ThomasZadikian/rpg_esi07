@@ -1,6 +1,7 @@
 ﻿using OtpNet;
 using RPG_ESI07.Domain.Interfaces;
 using System.Text;
+
 namespace RPG_ESI07.Infrastructure.Services;
 
 public class TotpMfaService : IMfaService
@@ -9,12 +10,14 @@ public class TotpMfaService : IMfaService
     {
         return KeyGeneration.GenerateRandomKey(20);
     }
+
     public string GetQrCodeUri(string secret, string username)
     {
         var base32Secret = Base32Encoding.ToString(Encoding.UTF8.GetBytes(secret));
 
         return $"otpauth://totp/RPG_ESI07:{username}?secret={base32Secret}&issuer=RPG_ESI07";
     }
+
     public bool ValidateCode(
     byte[] secret, string code)
     {

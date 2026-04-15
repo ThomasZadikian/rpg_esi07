@@ -9,5 +9,6 @@ public class PlayerSkill
 
     // Navigation properties
     public PlayerProfile Player { get; set; } = null!;
+
     public Skill Skill { get; set; } = null!;
 }

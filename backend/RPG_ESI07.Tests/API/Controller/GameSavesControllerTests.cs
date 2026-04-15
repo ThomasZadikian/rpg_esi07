@@ -7,11 +7,7 @@ using RPG_ESI07.API.Controllers;
 using RPG_ESI07.Application.Commands.GameSaves;
 using RPG_ESI07.Application.Queries.GameSaves;
 using RPG_ESI07.Domain.Entities;
-using System.Collections.Generic;
 using System.Security.Claims;
-using System.Threading;
-using System.Threading.Tasks;
-using Xunit;
 
 namespace RPG_ESI07.Tests.Controllers;
 

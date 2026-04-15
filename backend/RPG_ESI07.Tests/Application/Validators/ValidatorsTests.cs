@@ -1,7 +1,6 @@
 ﻿using FluentValidation.TestHelper;
 using RPG_ESI07.Application.Commands.Auth;
 using RPG_ESI07.Application.Validators;
-using Xunit;
 
 namespace RPG_ESI07.Tests.Application.Validators;
 

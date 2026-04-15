@@ -19,5 +19,6 @@ public class User
 
     // Navigation properties
     public PlayerProfile? PlayerProfile { get; set; }
+
     public ICollection<AuditLog> AuditLogs { get; set; } = new List<AuditLog>();
 }

@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using RPG_ESI07.Application.Commands.Auth;
+
 namespace RPG_ESI07.Application.Validators;
 
 public class RegisterValidator
@@ -28,6 +29,7 @@ public class RegisterValidator
         .WithMessage("One special character required");
     }
 }
+
 public class LoginValidator
 : AbstractValidator<LoginCommand>
 {

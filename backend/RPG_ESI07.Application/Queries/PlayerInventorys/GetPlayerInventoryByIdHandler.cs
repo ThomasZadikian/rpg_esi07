@@ -1,14 +1,11 @@
 ﻿using MediatR;
 using RPG_ESI07.Domain.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace RPG_ESI07.Application.Queries.PlayerInventorys; 
+namespace RPG_ESI07.Application.Queries.PlayerInventorys;
 
 public class GetPlayerInventoryByIdHandler : IRequestHandler<GetPlayerInventoryByIdQuery, GetPlayerInventoryByIdResponse>
 {
-    private readonly IPlayerInventoryRepository _repository; 
+    private readonly IPlayerInventoryRepository _repository;
 
     public GetPlayerInventoryByIdHandler(IPlayerInventoryRepository repository)
     {
@@ -22,7 +19,7 @@ public class GetPlayerInventoryByIdHandler : IRequestHandler<GetPlayerInventoryB
             throw new KeyNotFoundException("Player inventory not found");
 
         if (!request.IsAdmin && playerInventory.PlayerId != request.RequestingUserId)
-            throw new UnauthorizedAccessException("Access forbidden"); 
+            throw new UnauthorizedAccessException("Access forbidden");
 
         return new GetPlayerInventoryByIdResponse(playerInventory);
     }

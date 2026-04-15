@@ -6,10 +6,6 @@ using RPG_ESI07.API.Controllers;
 using RPG_ESI07.Application.Commands.AuditLogs;
 using RPG_ESI07.Application.Queries.AuditLogs;
 using RPG_ESI07.Domain.Entities;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using Xunit;
 
 namespace RPG_ESI07.Tests.Controllers;
 

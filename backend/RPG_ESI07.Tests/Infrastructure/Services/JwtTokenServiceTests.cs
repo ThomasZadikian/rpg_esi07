@@ -1,12 +1,8 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 using RPG_ESI07.Application.Configuration;
 using RPG_ESI07.Domain.Entities;
 using RPG_ESI07.Infrastructure.Services;
-using System;
-using System.IdentityModel.Tokens.Jwt;
-using Xunit;
 
 namespace RPG_ESI07.Tests.Infrastructure.Services;
 

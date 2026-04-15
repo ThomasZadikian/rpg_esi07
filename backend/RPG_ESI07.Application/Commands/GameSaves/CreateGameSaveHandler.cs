@@ -1,4 +1,3 @@
-using AutoMapper;
 using MediatR;
 using RPG_ESI07.Domain.Entities;
 using RPG_ESI07.Domain.Interfaces;

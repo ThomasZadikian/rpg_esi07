@@ -9,5 +9,6 @@ public class BestiaryUnlock
 
     // Navigation properties
     public PlayerProfile Player { get; set; } = null!;
+
     public Enemy Enemy { get; set; } = null!;
 }

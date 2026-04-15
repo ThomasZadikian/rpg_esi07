@@ -1,7 +1,5 @@
 ﻿using FluentAssertions;
 using RPG_ESI07.Application.Responses;
-using System.Collections.Generic;
-using Xunit;
 
 namespace RPG_ESI07.Tests.Application.Responses;
 
