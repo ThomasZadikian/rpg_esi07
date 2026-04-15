@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.Extensions.Logging;
 using RPG_ESI07.Domain.Interfaces;
 
 namespace RPG_ESI07.Application.Commands.Auth;
@@ -9,6 +10,7 @@ public class LoginHandler
     private readonly IUserRepository _userRepo;
     private readonly IPasswordHasher _hasher;
     private readonly ITokenService _tokenService;
+    private readonly ILogger<LoginHandler> _logger;
 
     public LoginHandler(
     IUserRepository userRepo,
@@ -24,6 +26,9 @@ public class LoginHandler
     LoginCommand request,
     CancellationToken ct)
     {
+        _logger.LogInformation(
+            "Login attempt for {Username}",
+            request.Username);
         // 1. Trouver le user
         var user = await _userRepo
         .GetByUsernameAsync(request.Username);
@@ -66,5 +71,6 @@ public class LoginHandler
         return new AuthResponse(
         true, token, false,
         "Login successful");
+
     }
 }

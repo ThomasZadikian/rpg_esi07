@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using RPG_ESI07.Application.Commands.Auth;
 namespace RPG_ESI07.API.Controllers;
 
@@ -11,6 +12,7 @@ public class AuthController : ControllerBase
     public AuthController(IMediator mediator)
     => _mediator = mediator;
     [HttpPost("register")]
+    [EnableRateLimiting("login")]
     public async Task<IActionResult> Register(
     [FromBody] RegisterCommand command)
     {
@@ -20,6 +22,7 @@ public class AuthController : ControllerBase
         return Ok(result);
     }
     [HttpPost("login")]
+    [EnableRateLimiting("login")]
     public async Task<IActionResult> Login(
     [FromBody] LoginCommand command)
     {
