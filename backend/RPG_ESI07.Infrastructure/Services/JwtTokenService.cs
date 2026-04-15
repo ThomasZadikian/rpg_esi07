@@ -61,13 +61,16 @@ public class JwtTokenService: ITokenService
 
     public int? ValidateTokenAndGetUserId(string token)
     {
-        var handler = new JwtSecurityTokenHandler();
-        var key = new SymmetricSecurityKey(
-        Encoding.UTF8.GetBytes(_settings.Secret));
+        var handler = new JwtSecurityTokenHandler
+        {
+            MapInboundClaims = false
+        };
+
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_settings.Secret));
+
         try
         {
-            var principal = handler.ValidateToken(token,
-            new TokenValidationParameters
+            var principal = handler.ValidateToken(token, new TokenValidationParameters
             {
                 ValidateIssuer = true,
                 ValidIssuer = _settings.Issuer,
@@ -76,11 +79,9 @@ public class JwtTokenService: ITokenService
                 ValidateLifetime = true,
                 IssuerSigningKey = key
             }, out _);
-            var sub = principal.FindFirst(
-            JwtRegisteredClaimNames.Sub)?.Value;
-            return sub != null
-            ? int.Parse(sub)
-            : null;
+
+            var sub = principal.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+            return sub != null ? int.Parse(sub) : null;
         }
         catch
         {
