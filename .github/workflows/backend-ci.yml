@@ -50,8 +50,14 @@ jobs:
         run: dotnet build RPG_ESI07.slnx --no-restore --configuration Release
 
       - name: Test
-        run: dotnet test RPG_ESI07.slnx --no-build --verbosity normal --configuration Release --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
-
+        run: |
+          dotnet test RPG_ESI07.slnx --no-build --configuration Release \
+          /p:CollectCoverage=true \
+          /p:Threshold=70 \
+          /p:ThresholdType=line \
+          /p:ThresholdStat=average \
+          /p:CoverletOutputFormat=opencover \
+          --collect:"XPlat Code Coverage"
       - name: SonarQube End
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
