@@ -106,6 +106,3 @@ if (app.Environment.IsDevelopment())
 }
 
 app.Run();
-
-[ExcludeFromCodeCoverage]
-public partial class Program { }

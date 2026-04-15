@@ -5,7 +5,7 @@ using RPG_ESI07.Infrastructure.Data;
 using RPG_ESI07.Infrastructure.Repositories;
 using Xunit;
 
-namespace RPG_ESI07.Tests.Infrastructure;
+namespace RPG_ESI07.Tests.Infrastructure.Repository;
 
 public class UserRepositoryTests : IDisposable
 {
