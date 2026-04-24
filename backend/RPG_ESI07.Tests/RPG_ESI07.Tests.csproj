@@ -42,4 +42,8 @@
     <ProjectReference Include="..\RPG_ESI07.Infrastructure\RPG_ESI07.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Application\Commands\RGPD\" />
+  </ItemGroup>
+
 </Project>
