@@ -440,3 +440,7 @@ dist-ssr/
 .env.test.local
 .env.production.local
 .eslintcache
+# Frontend — garder .env de base mais ignorer les .env locaux sensibles
+!frontend/.env
+frontend/.env.local
+frontend/.env.*.local
