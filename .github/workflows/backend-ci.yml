@@ -6,6 +6,9 @@ on:
       - develop
     paths:
       - 'backend/**'
+  pull_request:
+    branches:
+      - develop
 
 jobs:
   build:
