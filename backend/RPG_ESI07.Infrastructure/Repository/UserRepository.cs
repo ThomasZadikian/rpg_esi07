@@ -28,4 +28,22 @@ public class UserRepository : Repository<User>, IUserRepository
     {
         return await _dbSet.AnyAsync(u => u.Username == username);
     }
+
+    public async Task<User?> GetWithAllDataAsync(int userId)
+    {
+        return await _context.Users
+            .Include(u => u.PlayerProfile)
+            .ThenInclude(p => p!.GameSaves)
+            .Include(u => u.PlayerProfile)
+            .ThenInclude(p => p!.Inventory)
+            .ThenInclude(pi => pi.Item)
+            .Include(u => u.PlayerProfile)
+            .ThenInclude(p => p!.Skills)
+            .ThenInclude(ps => ps.Skill)
+            .Include(u => u.PlayerProfile)
+            .ThenInclude(p => p!.CombatStats)
+            .Include(u => u.PlayerProfile)
+            .ThenInclude(p => p!.BestiaryUnlocks)
+            .FirstOrDefaultAsync(u => u.Id == userId);
+    }
 }

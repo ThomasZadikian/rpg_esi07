@@ -9,4 +9,5 @@ public interface IUserRepository : IRepository<User>
     Task<User?> GetByEmailAsync(byte[] email);
 
     Task<bool> UsernameExistsAsync(string username);
+    Task<User?> GetWithAllDataAsync(int userId); 
 }
