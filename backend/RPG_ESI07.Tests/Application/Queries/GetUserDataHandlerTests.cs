@@ -30,6 +30,7 @@ public class GetUserDataHandlerTests
         return user;
     }
 
+    // ── Cas nominal ───────────────────────────────────────────────────────────
 
     [Fact]
     public async Task Handle_UserExistsWithProfile_ReturnsAllData()
@@ -96,6 +97,7 @@ public class GetUserDataHandlerTests
         props.Should().NotContain("MfaSecret");
     }
 
+    // ── Cas d'erreur ─────────────────────────────────────────────────────────
 
     [Fact]
     public async Task Handle_UserNotFound_ThrowsKeyNotFoundException()

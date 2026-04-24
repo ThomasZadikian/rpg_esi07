@@ -8,12 +8,12 @@ using System.Text.Json;
 namespace RPG_ESI07.API.Controllers;
 
 [ApiController]
-[Route("api/gdpr")]
+[Route("api/rgpd")]
 [Authorize]
-public class GdprController : ControllerBase
+public class RGPDController : ControllerBase
 {
     private readonly IMediator _mediator;
-    public GdprController(IMediator mediator) => _mediator = mediator;
+    public RGPDController(IMediator mediator) => _mediator = mediator;
 
     [HttpGet("export")]
     public async Task<IActionResult> ExportMyData()
