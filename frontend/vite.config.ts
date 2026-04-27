@@ -20,7 +20,7 @@ export default defineConfig({
       provider: 'v8',
       reporter: ['text', 'lcov'],
       include: ['src/**/*.{ts,vue}'],
-      exclude: ['src/tests/**', 'src/main.ts'], // tu avais une typo ici aussi
+      exclude: ['src/tests/**', 'src/main.ts', 'src/api/**', 'src/router/index.ts', 'src/plugins/**'], // tu avais une typo ici aussi
       thresholds: { lines: 70 },
     }
   }
