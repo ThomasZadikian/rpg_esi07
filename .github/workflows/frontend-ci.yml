@@ -56,4 +56,6 @@ jobs:
             -Dsonar.projectKey=ThomasZadikian_rpg_esi07_frontend
             -Dsonar.organization=thomaszadikian
             -Dsonar.sources=src
+            -Dsonar.exclusions=src/tests/**,src/**/*.test.ts,src/**/*.spec.ts
+            -Dsonar.coverage.exclusions=src/tests/**,src/**/*.test.ts,src/api/**,src/router/index.ts,src/plugins/**
             -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
