@@ -3,14 +3,14 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-"scripts": {
-  "dev": "vite",
-  "build": "vue-tsc -b && vite build",
-  "preview": "vite preview",
-  "lint": "eslint src --ext .ts,.vue",
-  "test": "vitest",
-  "test:coverage": "vitest run --coverage"
-},
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview",
+    "lint": "eslint src --ext .ts,.vue",
+    "test": "vitest",
+    "test:coverage": "vitest run --coverage"
+  },
   "dependencies": {
     "@mdi/font": "^7.4.47",
     "axios": "^1.13.5",
